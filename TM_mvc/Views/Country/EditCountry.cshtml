@@ -1,0 +1,53 @@
+﻿
+
+
+@model TM_mvc.Models.country
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+    <h4 class="modal-title custom_align" id="Heading">Edit Country</h4>
+</div>
+@using (Html.BeginForm("AddUpdateCountry","Country",FormMethod.Post,new { @class="form-horizontal"}))
+{
+
+
+    <div class="modal-body" style=" margin-left:10px;margin-right:10px;">
+        @Html.AntiForgeryToken()
+        <div id="div_id_country_code" class="form-group required">
+            <label for="id_country_code" class="control-label requiredField"> Country Code<span class="asteriskField">*</span> </label>
+            <div class="controls">
+                @Html.TextBoxFor(model => model.country_code, new { id = "txt_country_code", @class = "input-md textinput textInput form-control", maxlength = "10", style = "margin-bottom: 10px", placeholder = "Country Code" })
+
+            </div>
+        </div>
+        <div id="div_id_country_name" class="form-group required">
+            <label for="id_country_name" class="control-label   requiredField">Country Name<span class="asteriskField">*</span> </label>
+            <div class="controls">
+                @Html.TextBoxFor(model => model.country_name, new { id = "id_country_name", @class = "input-md textinput textInput form-control", placeholder = "Country Name", style = "margin-bottom: 10px" })
+
+            </div>
+        </div>
+
+
+        <div id="div_id_active_delete" class="form-group required">
+            
+            <div class="controls">
+                @Html.RadioButtonFor(model => model.is_active, true,new { id = "id_rb_isactive",style = "margin-bottom: 10px" })
+                @Html.Label("Active")
+                @Html.RadioButtonFor(model => model.is_active, false, new { id = "id_rb_isInActive", style = "margin-bottom: 10px" })
+                @Html.Label("InActive")
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="aab controls "></div>
+            <div class="controls">
+                @Html.HiddenFor(model=>model.country_id)
+                <input type="submit" name="btn_Save" value="Save" class="btn btn-primary btn btn-info" id="submit-id-save" />
+            </div>
+        </div>
+    </div>
+    @*<div class="modal-footer ">
+            <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
+        </div>*@
+}

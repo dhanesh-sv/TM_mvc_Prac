@@ -1,0 +1,14 @@
+﻿.btn-default .btn-label-subaction {
+    position: relative;
+    left: -12px;
+    display: inline-block;
+    padding: 6px 12px;
+    /*background: #a38855;*/
+    /*color: #fff;*/
+    border-radius: 3px 0 0 3px;
+}
+
+.btn-labeled {
+    padding-top: 0;
+    padding-bottom: 0;
+}

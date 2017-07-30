@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TM_mvc_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="country">
+          <Key>
+            <PropertyRef Name="country_id" />
+          </Key>
+          <Property Name="country_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="country_code" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="country_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="is_active" Type="bit" Nullable="false" />
+          <Property Name="is_deleted" Type="bit" Nullable="false" />
+          <Property Name="created_by" Type="bigint" Nullable="false" />
+          <Property Name="created_date" Type="datetime" Nullable="false" />
+          <Property Name="last_modified_by" Type="bigint" />
+          <Property Name="last_modified_date" Type="datetime" />
+          <Property Name="version" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="state">
+          <Key>
+            <PropertyRef Name="state_id" />
+          </Key>
+          <Property Name="state_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="state_code" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="state_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="country_id" Type="bigint" Nullable="false" />
+          <Property Name="is_active" Type="bit" Nullable="false" />
+          <Property Name="is_deleted" Type="bit" Nullable="false" />
+          <Property Name="created_by" Type="bigint" Nullable="false" />
+          <Property Name="created_date" Type="datetime" Nullable="false" />
+          <Property Name="last_modified_by" Type="bigint" />
+          <Property Name="last_modified_date" Type="datetime" />
+          <Property Name="version" Type="bigint" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_state_country">
+          <End Role="country" Type="Self.country" Multiplicity="1" />
+          <End Role="state" Type="Self.state" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="country_id" />
+            </Principal>
+            <Dependent Role="state">
+              <PropertyRef Name="state_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TM_mvc_DBModelStoreContainer">
+          <EntitySet Name="country" EntityType="Self.country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="state" EntityType="Self.state" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_state_country" Association="Self.FK_state_country">
+            <End Role="country" EntitySet="country" />
+            <End Role="state" EntitySet="state" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TM_mvc_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="country">
+          <Key>
+            <PropertyRef Name="country_id" />
+          </Key>
+          <Property Name="country_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="country_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="country_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="is_active" Type="Boolean" Nullable="false" />
+          <Property Name="is_deleted" Type="Boolean" Nullable="false" />
+          <Property Name="created_by" Type="Int64" Nullable="false" />
+          <Property Name="created_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="last_modified_by" Type="Int64" />
+          <Property Name="last_modified_date" Type="DateTime" Precision="3" />
+          <Property Name="version" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="state" Relationship="Self.FK_state_country" FromRole="country" ToRole="state" />
+        </EntityType>
+        <EntityType Name="state">
+          <Key>
+            <PropertyRef Name="state_id" />
+          </Key>
+          <Property Name="state_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="state_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="state_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="country_id" Type="Int64" Nullable="false" />
+          <Property Name="is_active" Type="Boolean" Nullable="false" />
+          <Property Name="is_deleted" Type="Boolean" Nullable="false" />
+          <Property Name="created_by" Type="Int64" Nullable="false" />
+          <Property Name="created_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="last_modified_by" Type="Int64" />
+          <Property Name="last_modified_date" Type="DateTime" Precision="3" />
+          <Property Name="version" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="country" Relationship="Self.FK_state_country" FromRole="state" ToRole="country" />
+        </EntityType>
+        <Association Name="FK_state_country">
+          <End Role="country" Type="Self.country" Multiplicity="1" />
+          <End Role="state" Type="Self.state" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="country_id" />
+            </Principal>
+            <Dependent Role="state">
+              <PropertyRef Name="state_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TM_mvc_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="countries" EntityType="Self.country" />
+          <EntitySet Name="states" EntityType="Self.state" />
+          <AssociationSet Name="FK_state_country" Association="Self.FK_state_country">
+            <End Role="country" EntitySet="countries" />
+            <End Role="state" EntitySet="states" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TM_mvc_DBModelStoreContainer" CdmEntityContainer="TM_mvc_DBEntities">
+          <EntitySetMapping Name="countries">
+            <EntityTypeMapping TypeName="TM_mvc_DBModel.country">
+              <MappingFragment StoreEntitySet="country">
+                <ScalarProperty Name="country_id" ColumnName="country_id" />
+                <ScalarProperty Name="country_code" ColumnName="country_code" />
+                <ScalarProperty Name="country_name" ColumnName="country_name" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="last_modified_by" ColumnName="last_modified_by" />
+                <ScalarProperty Name="last_modified_date" ColumnName="last_modified_date" />
+                <ScalarProperty Name="version" ColumnName="version" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="states">
+            <EntityTypeMapping TypeName="TM_mvc_DBModel.state">
+              <MappingFragment StoreEntitySet="state">
+                <ScalarProperty Name="state_id" ColumnName="state_id" />
+                <ScalarProperty Name="state_code" ColumnName="state_code" />
+                <ScalarProperty Name="state_name" ColumnName="state_name" />
+                <ScalarProperty Name="country_id" ColumnName="country_id" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="last_modified_by" ColumnName="last_modified_by" />
+                <ScalarProperty Name="last_modified_date" ColumnName="last_modified_date" />
+                <ScalarProperty Name="version" ColumnName="version" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
