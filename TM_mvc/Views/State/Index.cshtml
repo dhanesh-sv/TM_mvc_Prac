@@ -3,6 +3,91 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Masterpage.cshtml";
 }
+@model List<TM_mvc.Models.state>
 
 <h2>Index</h2>
+
+<link href="~/Content/dStyle.css" rel="stylesheet" />
+
+<div class="container">
+    <div class="row col-md-9">
+
+        <button type="button" class="btn btn-info pull-right btn-labeled btn-default " onclick="location.href='@Url.Action("AddEditModal", "State")'">
+            <span class=" btn-label-subaction"><i class="glyphicon glyphicon-plus"></i></span>Add State
+        </button>
+
+    </div>
+    <div class="row">
+
+
+        <div class="col-md-9">
+
+            <div class="table-responsive">
+
+                <table id="mytable" class="table table-bordred table-striped">
+
+                    <tr style="background-color:lightblue">
+                        <th>State Code</th>
+                        <th>State Name</th>
+                        <th>Is Active</th>
+                        <th>Created By</th>
+                        <th>Edit</th>
+
+
+                    </tr>
+                    <tbody>
+                        @if (Model != null)
+                        {
+
+
+                            foreach (var item in Model)
+                            {
+                                <tr style="padding:2px">
+
+                                    <td>@Html.DisplayFor(x => item.state_code)</td>
+                                    <td>@Html.DisplayFor(x => item.state_name)</td>
+                                    @if (item.is_active == true)
+                                    {
+                                        <td>Active</td>
+                                    }
+                                    else
+                                    {
+                                        <td>In Active</td>
+                                    }
+
+                                    <td>Dhanesh</td>
+
+                                    <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button name="btnEdit" class="btn btn-primary btn-xs" onclick="showmodal(@item.state_id)"><span class="glyphicon glyphicon-pencil" name="spanEdit"></span></button></p></td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                </table>
+                <div class="clearfix"></div>
+                <ul class="pagination pull-right">
+                    <li class="disabled"><a href="#"><span class="glyphicon glyphicon-chevron-left"></span></a></li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="loadEditModel"></div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 
