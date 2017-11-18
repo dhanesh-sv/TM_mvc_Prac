@@ -12,18 +12,12 @@ namespace TM_mvc.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class state
+    public partial class district
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public state()
-        {
-            this.districts = new HashSet<district>();
-        }
-    
+        public long district_id { get; set; }
+        public string district_code { get; set; }
+        public string district_name { get; set; }
         public long state_id { get; set; }
-        public string state_code { get; set; }
-        public string state_name { get; set; }
-        public long country_id { get; set; }
         public bool is_active { get; set; }
         public bool is_deleted { get; set; }
         public long created_by { get; set; }
@@ -32,8 +26,6 @@ namespace TM_mvc.Models
         public Nullable<System.DateTime> last_modified_date { get; set; }
         public long version { get; set; }
     
-        public virtual country country { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<district> districts { get; set; }
+        public virtual state state { get; set; }
     }
 }

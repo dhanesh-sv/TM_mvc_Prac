@@ -46,7 +46,7 @@ namespace TM_mvc.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddUpdateCountry([Bind(Include = "country_code,country_name,country_id")]country objCountry)
+        public ActionResult AddUpdateCountry([Bind(Include = "country_code,country_name,country_id,version")]country objCountry)
         {
             if (objCountry.country_id == 0)
             {

@@ -27,5 +27,6 @@ namespace TM_mvc.Models
     
         public virtual DbSet<country> countries { get; set; }
         public virtual DbSet<state> states { get; set; }
+        public virtual DbSet<district> districts { get; set; }
     }
 }

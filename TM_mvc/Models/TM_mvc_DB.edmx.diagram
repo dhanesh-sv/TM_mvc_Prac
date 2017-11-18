@@ -5,9 +5,9 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="70436c4a9c344d2287297ef9dc938f36" Name="Diagram1">
-        <EntityTypeShape EntityType="TM_mvc_DBModel.country" Width="1.5" PointX="0.75" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="TM_mvc_DBModel.state" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <AssociationConnector Association="TM_mvc_DBModel.FK_state_country" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TM_mvc_DBModel.state" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="TM_mvc_DBModel.district" Width="1.5" PointX="3" PointY="0.875" />
+        <AssociationConnector Association="TM_mvc_DBModel.FK_district_state" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="TM_mvc_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="TM_mvc_DBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="country">
           <Key>
             <PropertyRef Name="country_id" />
@@ -12,6 +12,22 @@
           <Property Name="country_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="country_code" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="country_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="is_active" Type="bit" Nullable="false" />
+          <Property Name="is_deleted" Type="bit" Nullable="false" />
+          <Property Name="created_by" Type="bigint" Nullable="false" />
+          <Property Name="created_date" Type="datetime" Nullable="false" />
+          <Property Name="last_modified_by" Type="bigint" />
+          <Property Name="last_modified_date" Type="datetime" />
+          <Property Name="version" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="district">
+          <Key>
+            <PropertyRef Name="district_id" />
+          </Key>
+          <Property Name="district_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="district_code" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="district_name" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="state_id" Type="bigint" Nullable="false" />
           <Property Name="is_active" Type="bit" Nullable="false" />
           <Property Name="is_deleted" Type="bit" Nullable="false" />
           <Property Name="created_by" Type="bigint" Nullable="false" />
@@ -36,28 +52,44 @@
           <Property Name="last_modified_date" Type="datetime" />
           <Property Name="version" Type="bigint" Nullable="false" />
         </EntityType>
+        <Association Name="FK_district_state">
+          <End Role="state" Type="Self.state" Multiplicity="1" />
+          <End Role="district" Type="Self.district" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="state">
+              <PropertyRef Name="state_id" />
+            </Principal>
+            <Dependent Role="district">
+              <PropertyRef Name="state_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_state_country">
           <End Role="country" Type="Self.country" Multiplicity="1" />
-          <End Role="state" Type="Self.state" Multiplicity="0..1" />
+          <End Role="state" Type="Self.state" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="country">
               <PropertyRef Name="country_id" />
             </Principal>
             <Dependent Role="state">
-              <PropertyRef Name="state_id" />
+              <PropertyRef Name="country_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="TM_mvc_DBModelStoreContainer">
           <EntitySet Name="country" EntityType="Self.country" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="district" EntityType="Self.district" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="state" EntityType="Self.state" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_district_state" Association="Self.FK_district_state">
+            <End Role="state" EntitySet="state" />
+            <End Role="district" EntitySet="district" />
+          </AssociationSet>
           <AssociationSet Name="FK_state_country" Association="Self.FK_state_country">
             <End Role="country" EntitySet="country" />
             <End Role="state" EntitySet="state" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="TM_mvc_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -75,15 +107,28 @@
           <Property Name="last_modified_by" Type="Int64" />
           <Property Name="last_modified_date" Type="DateTime" Precision="3" />
           <Property Name="version" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="state" Relationship="Self.FK_state_country" FromRole="country" ToRole="state" />
-        </EntityType>
+          <NavigationProperty Name="states" Relationship="TM_mvc_DBModel.FK_state_country" FromRole="country" ToRole="state" />
+          </EntityType>
+        <EntityContainer Name="TM_mvc_DBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="countries" EntityType="Self.country" />
+          <EntitySet Name="states" EntityType="TM_mvc_DBModel.state" />
+          <AssociationSet Name="FK_state_country" Association="TM_mvc_DBModel.FK_state_country">
+            <End Role="country" EntitySet="countries" />
+            <End Role="state" EntitySet="states" />
+          </AssociationSet>
+          <EntitySet Name="districts" EntityType="TM_mvc_DBModel.district" />
+          <AssociationSet Name="FK_district_state" Association="TM_mvc_DBModel.FK_district_state">
+            <End Role="state" EntitySet="states" />
+            <End Role="district" EntitySet="districts" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="state">
           <Key>
             <PropertyRef Name="state_id" />
           </Key>
           <Property Name="state_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="state_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="state_name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="state_code" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="state_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="country_id" Type="Int64" Nullable="false" />
           <Property Name="is_active" Type="Boolean" Nullable="false" />
           <Property Name="is_deleted" Type="Boolean" Nullable="false" />
@@ -92,28 +137,50 @@
           <Property Name="last_modified_by" Type="Int64" />
           <Property Name="last_modified_date" Type="DateTime" Precision="3" />
           <Property Name="version" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="country" Relationship="Self.FK_state_country" FromRole="state" ToRole="country" />
+          <NavigationProperty Name="country" Relationship="TM_mvc_DBModel.FK_state_country" FromRole="state" ToRole="country" />
+          <NavigationProperty Name="districts" Relationship="TM_mvc_DBModel.FK_district_state" FromRole="state" ToRole="district" />
         </EntityType>
         <Association Name="FK_state_country">
-          <End Role="country" Type="Self.country" Multiplicity="1" />
-          <End Role="state" Type="Self.state" Multiplicity="0..1" />
+          <End Type="TM_mvc_DBModel.country" Role="country" Multiplicity="1" />
+          <End Type="TM_mvc_DBModel.state" Role="state" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="country">
               <PropertyRef Name="country_id" />
             </Principal>
             <Dependent Role="state">
+              <PropertyRef Name="country_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="district">
+          <Key>
+            <PropertyRef Name="district_id" />
+          </Key>
+          <Property Name="district_id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="district_code" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="district_name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="state_id" Type="Int64" Nullable="false" />
+          <Property Name="is_active" Type="Boolean" Nullable="false" />
+          <Property Name="is_deleted" Type="Boolean" Nullable="false" />
+          <Property Name="created_by" Type="Int64" Nullable="false" />
+          <Property Name="created_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="last_modified_by" Type="Int64" />
+          <Property Name="last_modified_date" Type="DateTime" Precision="3" />
+          <Property Name="version" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="state" Relationship="TM_mvc_DBModel.FK_district_state" FromRole="district" ToRole="state" />
+        </EntityType>
+        <Association Name="FK_district_state">
+          <End Type="TM_mvc_DBModel.state" Role="state" Multiplicity="1" />
+          <End Type="TM_mvc_DBModel.district" Role="district" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="state">
+              <PropertyRef Name="state_id" />
+            </Principal>
+            <Dependent Role="district">
               <PropertyRef Name="state_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="TM_mvc_DBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="countries" EntityType="Self.country" />
-          <EntitySet Name="states" EntityType="Self.state" />
-          <AssociationSet Name="FK_state_country" Association="Self.FK_state_country">
-            <End Role="country" EntitySet="countries" />
-            <End Role="state" EntitySet="states" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -139,17 +206,34 @@
           <EntitySetMapping Name="states">
             <EntityTypeMapping TypeName="TM_mvc_DBModel.state">
               <MappingFragment StoreEntitySet="state">
-                <ScalarProperty Name="state_id" ColumnName="state_id" />
-                <ScalarProperty Name="state_code" ColumnName="state_code" />
-                <ScalarProperty Name="state_name" ColumnName="state_name" />
-                <ScalarProperty Name="country_id" ColumnName="country_id" />
-                <ScalarProperty Name="is_active" ColumnName="is_active" />
-                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
-                <ScalarProperty Name="created_by" ColumnName="created_by" />
-                <ScalarProperty Name="created_date" ColumnName="created_date" />
-                <ScalarProperty Name="last_modified_by" ColumnName="last_modified_by" />
-                <ScalarProperty Name="last_modified_date" ColumnName="last_modified_date" />
                 <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="last_modified_date" ColumnName="last_modified_date" />
+                <ScalarProperty Name="last_modified_by" ColumnName="last_modified_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="country_id" ColumnName="country_id" />
+                <ScalarProperty Name="state_name" ColumnName="state_name" />
+                <ScalarProperty Name="state_code" ColumnName="state_code" />
+                <ScalarProperty Name="state_id" ColumnName="state_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="districts">
+            <EntityTypeMapping TypeName="TM_mvc_DBModel.district">
+              <MappingFragment StoreEntitySet="district">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="last_modified_date" ColumnName="last_modified_date" />
+                <ScalarProperty Name="last_modified_by" ColumnName="last_modified_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="is_deleted" ColumnName="is_deleted" />
+                <ScalarProperty Name="is_active" ColumnName="is_active" />
+                <ScalarProperty Name="state_id" ColumnName="state_id" />
+                <ScalarProperty Name="district_name" ColumnName="district_name" />
+                <ScalarProperty Name="district_code" ColumnName="district_code" />
+                <ScalarProperty Name="district_id" ColumnName="district_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -25,8 +25,7 @@
         <div id="div_id_country" class="form-group required">
             <label for="id_country" class="control-label requiredField">Country<span class="asteriskField">*</span> </label>
             <div class="controls">
-                @Html.TextBoxFor(model => model.state_code, new { id = "txt_state_code", @class = "input-md textinput textInput form-control", maxlength = "10", style = "margin-bottom: 10px", placeholder = "State Code" })
-               @Html.DropDownListFor(model=>model.country_id,Model.Countries as SelectList) 
+               @Html.DropDownListFor(model=>model.country_id,new SelectList(Model.Countries,"country_id","country_name"),"--Select--",new {id="ddl_country_id",@class="form-control" }) 
             </div>
         </div>
 
@@ -66,7 +65,6 @@
             </div>
         </div>
     </div>
-    @*<div class="modal-footer ">
-            <button type="button" class="btn btn-warning btn-lg" style="width: 100%;"><span class="glyphicon glyphicon-ok-sign"></span> Update</button>
-        </div>*@
+   
 }
+

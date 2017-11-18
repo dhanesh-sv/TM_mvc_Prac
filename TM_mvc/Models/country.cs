@@ -14,6 +14,12 @@ namespace TM_mvc.Models
     
     public partial class country
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public country()
+        {
+            this.states = new HashSet<state>();
+        }
+    
         public long country_id { get; set; }
         public string country_code { get; set; }
         public string country_name { get; set; }
@@ -25,6 +31,7 @@ namespace TM_mvc.Models
         public Nullable<System.DateTime> last_modified_date { get; set; }
         public long version { get; set; }
     
-        public virtual state state { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<state> states { get; set; }
     }
 }
