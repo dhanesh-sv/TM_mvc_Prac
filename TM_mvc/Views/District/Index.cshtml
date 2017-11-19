@@ -4,46 +4,68 @@
     Layout = "~/Views/Shared/_Masterpage.cshtml";
 }
 @model List<TM_mvc.Models.district>
-<h2>Index</h2>
-
 <link href="~/Content/dStyle.css" rel="stylesheet" />
-
+<link href="~/Content/formstyle.css" rel="stylesheet" />
 <div class="container">
+    
+        @using (Html.BeginForm("GetDistrictList", "District", FormMethod.Get, new { @class = "form-horizontal" }))
+        {
+            
+                <ul class="form-style-1">
+                   <li>
+                        <label class="field-select">Country</label>
+                       <label class="field-select">Country</label>
+                       <label class="field-select">Country</label>
+                        <select name="field4" class="field-select">
+                            <option value="Advertise">Advertise</option>
+                            <option value="Partnership">Partnership</option>
+                            <option value="General Question">General</option>
+                        </select>
+
+                       
+                       <select name="field4" class="field-select">
+                           <option value="Advertise">Advertise</option>
+                           <option value="Partnership">Partnership</option>
+                           <option value="General Question">General</option>
+                       </select>
+
+                       @*<div class="field-select">
+                           @Html.DropDownListFor(model => model.country_id, new SelectList(Model.Countries, "country_id", "country_name"), "--Select--", new { id = "ddl_country_id", @class = "form-control" })
+                       </div>*@
+                    </li>                    
+                    <li>
+                        <input type="submit" value="Submit" />
+                    </li>
+                </ul>
+            
+        }
+
+        
+        
+       
+    
     <div class="row col-md-9">
-
-
         <button type="button" class="btn btn-info pull-right btn-labeled btn-default " onclick="showmodal(0)">
             <span class=" btn-label-subaction"><i class="glyphicon glyphicon-plus"></i></span>Add District
         </button>
-
     </div>
     <div class="row">
-
-
         <div class="col-md-9">
-
             <div class="table-responsive">
-
                 <table id="mytable" class="table table-bordred table-striped">
-
                     <tr style="background-color:lightblue">
                         <th>District Code</th>
                         <th>District Name</th>
                         <th>Is Active</th>
                         <th>Created By</th>
                         <th>Edit</th>
-
-
                     </tr>
                     <tbody>
                         @if (Model != null)
                         {
-
-
                             foreach (var item in Model)
                             {
                                 <tr style="padding:2px">
-
                                     <td>@Html.DisplayFor(x => item.district_code)</td>
                                     <td>@Html.DisplayFor(x => item.district_name)</td>
                                     @if (item.is_active == true)
@@ -54,15 +76,12 @@
                                     {
                                         <td>In Active</td>
                                     }
-
                                     <td>Dhanesh</td>
-
                                     <td><p data-placement="top" data-toggle="tooltip" title="Edit"><button name="btnEdit" class="btn btn-primary btn-xs" onclick="showmodal(@item.district_id)"><span class="glyphicon glyphicon-pencil" name="spanEdit"></span></button></p></td>
                                 </tr>
                             }
                         }
                     </tbody>
-
                 </table>
                 <div class="clearfix"></div>
                 <ul class="pagination pull-right">
@@ -74,9 +93,7 @@
                     <li><a href="#">5</a></li>
                     <li><a href="#"><span class="glyphicon glyphicon-chevron-right"></span></a></li>
                 </ul>
-
             </div>
-
         </div>
     </div>
 </div>

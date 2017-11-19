@@ -25,6 +25,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -197,6 +198,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dStyle.css" />
     <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\formstyle.css" />
     <Content Include="Content\jquery-ui-1.10.3.css" />
     <Content Include="Content\mainlayout.css" />
     <Content Include="Content\slidebars.css" />
